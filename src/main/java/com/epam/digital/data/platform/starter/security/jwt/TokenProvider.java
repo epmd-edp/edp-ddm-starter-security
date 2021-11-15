@@ -29,9 +29,9 @@ public class TokenProvider {
    * Building {@link Authentication} object from string JWT token
    */
   public Authentication getAuthentication(String token) {
-    log.debug("Access token: {}", token);
+    log.debug("Start parsing access token");
     var claims = tokenParser.parseClaims(token);
-    log.debug("Decoded token body: {}", claims);
+    log.debug("Access token decoded successfully");
 
     var authorities = getAuthorities(claims);
     var principal = new User(claims.getPreferredUsername(), "", authorities);
