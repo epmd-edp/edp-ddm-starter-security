@@ -30,16 +30,19 @@
   applied or not if false then local security configuration applies
 
 4. To enable security for spring beans use:
-    * `com.epam.digital.data.platform.starter.security.annotation.PreAuthorizeAnySystemRole` - checks any system role (citizen / officer);
-    * `com.epam.digital.data.platform.starter.security.annotation.PreAuthorizeCitizen` - checks citizen role;
-    * `com.epam.digital.data.platform.starter.security.annotation.PreAuthorizeOfficer` -  checks officer role.
+    * `com.epam.digital.data.platform.starter.security.annotation.PreAuthorizeAnySystemRole` -
+      checks any system role (citizen / officer);
+    * `com.epam.digital.data.platform.starter.security.annotation.PreAuthorizeCitizen` - checks
+      citizen role;
+    * `com.epam.digital.data.platform.starter.security.annotation.PreAuthorizeOfficer` - checks
+      officer role.
 
 ### Test execution
 
 * Tests could be run via maven command:
     * `mvn verify` OR using appropriate functions of your IDE.
-    
+
 ### License
 
-The ddm-starter-security is released under version 2.0 of
-the [Apache License](https://www.apache.org/licenses/LICENSE-2.0).
+The ddm-starter-security is Open Source software released under
+the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0).
