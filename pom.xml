@@ -6,15 +6,15 @@
 
   <groupId>com.epam.digital.data.platform</groupId>
   <artifactId>ddm-starter-security</artifactId>
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
 
   <name>ddm-starter-security</name>
   <description>Security spring boot starter</description>
 
   <properties>
     <java.version>11</java.version>
-	<log4j.version>2.16.0</log4j.version>
-    <spring.boot.version>2.3.9.RELEASE</spring.boot.version>
+    <log4j.version>2.17.0</log4j.version>
+    <spring.boot.version>2.6.1</spring.boot.version>
     <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
     <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
     <keykloac-core.version>12.0.4</keykloac-core.version>

@@ -30,8 +30,7 @@ import com.google.common.io.ByteStreams;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -48,7 +47,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {WebSecurityConfigIT.TestConfiguration.class})
 @EnableConfigurationProperties(ServerProperties.class)
 public class WebSecurityConfigIT {

@@ -26,18 +26,18 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JwtAuthenticationFilterTest {
 
   @Mock
@@ -55,12 +55,12 @@ public class JwtAuthenticationFilterTest {
 
   private JwtAuthenticationFilter filter;
 
-  @Before
+  @BeforeEach
   public void init() {
     filter = new JwtAuthenticationFilter(tokenProvider, whitelist);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     SecurityContextHolder.getContext().setAuthentication(null);
   }
