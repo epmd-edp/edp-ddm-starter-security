@@ -27,11 +27,9 @@ import org.slf4j.MDC;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.stereotype.Component;
 
-@Component
 @RequiredArgsConstructor
-public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+public class DefaultAccessDeniedHandler implements AccessDeniedHandler {
 
   private final ObjectMapper objectMapper;
 

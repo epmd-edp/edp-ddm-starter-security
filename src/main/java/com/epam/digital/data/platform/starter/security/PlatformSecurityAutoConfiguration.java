@@ -18,8 +18,9 @@ package com.epam.digital.data.platform.starter.security;
 
 import com.epam.digital.data.platform.starter.security.config.SecurityProperties;
 import com.epam.digital.data.platform.starter.security.config.Whitelist;
+import com.epam.digital.data.platform.starter.security.jwt.DefaultAccessDeniedHandler;
 import com.epam.digital.data.platform.starter.security.jwt.JwtConfigurer;
-import com.epam.digital.data.platform.starter.security.jwt.RestAuthenticationEntryPoint;
+import com.epam.digital.data.platform.starter.security.jwt.DefaultAuthenticationEntryPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,6 +30,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @Import({WebSecurityConfig.class})
@@ -42,7 +45,13 @@ public class PlatformSecurityAutoConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  public RestAuthenticationEntryPoint restAuthenticationEntryPoint() {
-    return new RestAuthenticationEntryPoint(objectMapper);
+  public AuthenticationEntryPoint authenticationEntryPoint() {
+    return new DefaultAuthenticationEntryPoint(objectMapper);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public AccessDeniedHandler accessDeniedHandler() {
+    return new DefaultAccessDeniedHandler(objectMapper);
   }
 }

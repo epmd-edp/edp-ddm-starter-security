@@ -17,10 +17,8 @@
 package com.epam.digital.data.platform.starter.security;
 
 import com.epam.digital.data.platform.starter.security.config.Whitelist;
-import com.epam.digital.data.platform.starter.security.jwt.JwtAccessDeniedHandler;
 import com.epam.digital.data.platform.starter.security.jwt.JwtConfigurer;
-import com.epam.digital.data.platform.starter.security.jwt.RestAuthenticationEntryPoint;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -31,43 +29,72 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.LazyCsrfTokenRepository;
 
 @Order(WebSecurityConfig.DEFAULT_ORDER)
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 10;
 
   private final JwtConfigurer securityConfigurerAdapter;
-  private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-  private final RestAuthenticationEntryPoint authenticationErrorHandler;
+  private final AccessDeniedHandler accessDeniedHandler;
+  private final AuthenticationEntryPoint authenticationErrorHandler;
   private final Whitelist whitelist;
+
+  private final boolean csrfEnabled;
+
+  public WebSecurityConfig(
+      JwtConfigurer securityConfigurerAdapter,
+      AccessDeniedHandler accessDeniedHandler,
+      AuthenticationEntryPoint authenticationErrorHandler,
+      Whitelist whitelist,
+      @Value("${platform.security.csrf.enabled:false}") boolean csrfEnabled) {
+    this.securityConfigurerAdapter = securityConfigurerAdapter;
+    this.accessDeniedHandler = accessDeniedHandler;
+    this.authenticationErrorHandler = authenticationErrorHandler;
+    this.whitelist = whitelist;
+    this.csrfEnabled = csrfEnabled;
+  }
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable()
-        .exceptionHandling()
+    if (csrfEnabled) {
+      http = http.csrf().csrfTokenRepository(tokenRepository()).and();
+    } else {
+      http = http.csrf().disable();
+    }
+    http.exceptionHandling()
         .authenticationEntryPoint(authenticationErrorHandler)
-        .accessDeniedHandler(jwtAccessDeniedHandler)
+        .accessDeniedHandler(accessDeniedHandler)
         .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeRequests()
-        .anyRequest().authenticated()
+        .anyRequest()
+        .authenticated()
         .and()
         .apply(securityConfigurerAdapter);
   }
 
   @Override
-  public void configure(WebSecurity web) throws Exception {
+  public void configure(WebSecurity web) {
     web.ignoring().requestMatchers(whitelist.getRequestMatcher());
   }
 
   @Bean
   public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
     return new InMemoryUserDetailsManager();
+  }
+
+  @Bean
+  public CsrfTokenRepository tokenRepository() {
+    return new LazyCsrfTokenRepository(new CookieCsrfTokenRepository());
   }
 }
