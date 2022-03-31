@@ -33,7 +33,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.LazyCsrfTokenRepository;
 
 @Order(WebSecurityConfig.DEFAULT_ORDER)
 @EnableWebSecurity
@@ -95,6 +94,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public CsrfTokenRepository tokenRepository() {
-    return new LazyCsrfTokenRepository(new CookieCsrfTokenRepository());
+    return CookieCsrfTokenRepository.withHttpOnlyFalse();
   }
 }
